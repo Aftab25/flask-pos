@@ -1,0 +1,148 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Add Store {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/static/assets/plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/static/assets/css/adminlte.min.css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-6">
+          <div class="col-sm-6">
+            <h1>Add Store</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Add Store</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">General</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+
+              <form id="store_form" name="store" method="post" action=""  >
+
+          {{ form.hidden_tag() }}
+
+            <div class="card-body">
+              <div class="form-group">
+
+                  {%with messages = get_flashed_messages() %}
+                  {%if messages %}
+                  {%for message in messages %}
+                      <div class="alert alert-success alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                          <span aria-hidden="true">x</span>
+                      </button>
+                      {{ message }}
+                      </div>
+
+                  {%endfor%}
+              {%endif%}
+              {%endwith%}
+
+
+              {% for field in form.errors %}
+                {% for error in form.errors[field] %}
+                    <div class="alert alert-error">
+                        <strong>Error!</strong> {{error}}
+
+                    </div>
+                {% endfor %}
+              {% endfor %}
+
+
+                    <label for="storeid">Store ID</label>
+                  {{ form.storeid(placeholder="Store ID", class="form-control") }}
+              </div>
+            <div>
+            <label for="storename">Store Name</label>
+                  {{ form.storename(placeholder="Store Name", class="form-control") }}
+              </div>
+
+            <div>
+            <label for="storename">Warehouse Name</label>
+                  {{ form.warehousename(placeholder="Warehouse Name", class="form-control") }}
+              </div>
+
+
+            <label for="defaultcustomername">Default Customer</label>
+                  {{ form.defaultcustomername(placeholder="Default Customer", class="form-control") }}
+              </div>
+
+
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <div class="col-md-6">
+
+          <!-- /.card -->
+        </div>
+
+
+      <div class="row">
+        <div class="col-6">
+          <a href="#" class="btn btn-secondary">Cancel</a>
+            <a href="searchstore" class="btn btn-secondary float-center">Search Store</a>
+          <input type="submit" value="Add new Store" class="btn btn-success float-right">
+
+        </div>
+      </div>
+         </form>
+    </section>
+
+
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="/static/assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="/static/assets/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/static/assets/js/demo.js"></script>
+
+{% endblock javascripts %}

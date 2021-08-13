@@ -1,0 +1,341 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Search Warehouses {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/static/assets/plugins/fontawesome-free/css/all.min.css">
+
+    <!-- DataTables -->
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/static/assets/css/adminlte.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='dist/css/jquery.toast.min.css') }}">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-6">
+          <div class="col-sm-6">
+            <h1>Search Warehouses</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Search Warehouses</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Search Warehouses</h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+              <form id="warehousesearchform" method="post" action="searchwarehouse">
+                  {{ form.hidden_tag() }}
+            <div class="card-body">
+              <div class="form-group">
+                <label for="warehouseid">Warehouse ID</label>
+                  {{ form.warehouseid (placeholder='Warehouse ID', class='form-control') }}
+                  </div>
+
+                <div class="form-group">
+                    <label for="warehousename">Warehouse Name</label>
+                    {{ form.warehousename (placeholder='Warehouse Name', class='form-control') }}
+                </div>
+
+
+
+
+
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+
+
+        <div class="col-md-9">
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Warehouse List</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+             <table id="producttable" class="table table-striped ">
+              <thead>
+                  <tr>
+
+                      <th style="width: 10%">
+                          Warehouse ID
+                      </th>
+                      <th style="width: 30%">
+                          Warehouse Name
+                      </th>
+
+
+                      <th style="width: 5%">
+                          Edit
+                      </th>
+                      <th style="width: 5%">
+                          Delete
+                      </th>
+                  </tr>
+              </thead>
+              <tbody id="tbody">
+              {% for row in productdetails  %}
+              <tr>
+                  <td>
+                     {{ row['warehouseid'] }}
+                  </td>
+
+                  <td>
+                     {{ row['warehousename'] }}
+                  </td>
+
+
+
+                    <td>
+                     <button type="button" class="btnviewproduct" data-id="{{ row['warehousekey'] }}"  data-toggle="modal" data-target="#modal-xl"  >Edit</button>
+                  </td>
+
+                    <td>
+
+                  </td>
+
+              </tr>
+              {% endfor %}
+
+              </tbody>
+          </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+
+
+
+
+
+
+          <div class="modal fade" id="modal-xl">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Warehouse Detail</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <table id="viewsaleordertable" class="table table-striped ">
+              <thead>
+                  <tr>
+                        <th style="width: 10%">
+                          Warehouse ID
+                      </th>
+
+                      <th style="width: 10%">
+                          Warehouse Name
+                      </th>
+
+
+
+
+                  </tr>
+              </thead>
+              <tbody id="viewsaleordertbody">
+
+              <tr>
+                  <td >
+                      <input type="text" id="vwarehouseid" name="vwarehouseid" class="vwarehouseid" >
+                      <input type="hidden" id="vwarehousekey" class="vwarehousekey">
+                  </td>
+
+                  <td >
+                        <input type="text" id="vwarehousename" name="vwarehousename" class="vwarehousename" >
+                  </td>
+
+
+
+              </tr>
+                  </tbody>
+
+                  </table>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" id="btnclose" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" id="saveproduct" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+
+
+
+
+
+
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <a href="#" id="btncancel" class="btn btn-secondary">Cancel</a>
+            <button type="submit" id="btnsearchproducts" class="btn btn-success float-right">Search Warehouses</button>
+        </div>
+      </div>
+ </form>
+    </section>
+
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="/static/assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables  & Plugins -->
+<script src="/static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/static/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/static/assets/plugins/jszip/jszip.min.js"></script>
+<script src="/static/assets/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/static/assets/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+
+
+  <!-- AdminLTE App -->
+  <script src="/static/assets/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/static/assets/js/demo.js"></script>
+<script src="{{ url_for('static', filename='dist/js/jquery.toast.min.js') }}"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+
+
+       $('#modal-xl').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var warehousekey = button.data('id'); // Extract info from data-* attributes
+            insertRow(warehousekey);
+        });
+
+function insertRow(warehousekey){
+    $.get("/warehouse", {warehousekey: warehousekey}, function (data) {
+        $("#vwarehouseid").val(data[0]['warehouseid']);
+        $("#vwarehousekey").val(data[0]['warehousekey']);
+        $("#vwarehousename").val(data[0]['warehousename']);
+
+    });
+}
+
+
+$(document).on("click", "#saveproduct", function(){
+    var warehouseid=$("#vwarehouseid").val();
+    var warehousekey=$("#vwarehousekey").val();
+    var warehousename = $("#vwarehousename").val();
+
+
+    $.ajax({
+    url: '/warehouse',
+    method: 'PUT',
+    contentType: 'application/json',
+        data: { warehouseid:warehouseid, warehousekey:warehousekey, warehousename:warehousename } ,
+    success: function(result) {
+        // handle success
+        if (result == 'Warehouse Updated')
+            {
+                $.toast('Warehouse Updated');
+                 $('#modal-xl').modal('hide');
+                  location.reload();
+            }
+    },
+    error: function(request,msg,error) {
+        // handle failure
+        console.log(msg)
+        }
+    });
+
+});
+
+
+$(function () {
+    $('#producttable').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+
+
+
+$(document).on("click", "#btncancel", function(){
+        $("#warehousesearchform")[0].reset();
+    });
+
+
+
+
+
+});
+    </script>
+
+{% endblock javascripts %}

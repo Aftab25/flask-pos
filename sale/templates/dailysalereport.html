@@ -1,0 +1,301 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Daily Sale Report {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/static/assets/plugins/fontawesome-free/css/all.min.css">
+
+       <!-- DataTables -->
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/static/assets/css/adminlte.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='dist/css/jquery.toast.min.css') }}">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-6">
+          <div class="col-sm-6">
+            <h1>Daily Sale Report</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Daily Sale Report</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Daily Sale Report</h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+              <form id="saleordersearchform" method="post" action="dailysalereport">
+                  {{ form.hidden_tag() }}
+            <div class="card-body">
+
+                <div class="form-group">
+                <label for="startdate">Start Date</label>
+                  {{ form.startdate (placeholder='Start Date', class='form-control') }}
+                  </div>
+
+                <div class="form-group">
+                <label for="enddate">End Date</label>
+                  {{ form.enddate (placeholder='End Date', class='form-control') }}
+                  </div>
+
+
+                <div class="form-group">
+                  <label for="storename">Store Name</label>
+                  {{ form.storename (placeholder='Store Name', class='form-control') }}
+              </div>
+                <div class="form-group">
+                    <label for="posname">POS Name</label>
+                    {{ form.posname (placeholder='POS Name', class='form-control' ) }}
+                </div>
+
+
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+
+
+        <div class="col-md-9">
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Daily Sale Report</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+             <table id="saleorderstable" class="table table-striped ">
+              <thead>
+                  <tr>
+
+                      <th style="width: 10%">
+                          Sale Date
+                      </th>
+
+                       <th style="width: 10%">
+                          Store
+                      </th>
+
+                      <th style="width: 10%">
+                          POS
+                      </th>
+
+                        <th style="width: 10%">
+                          Barcode
+                      </th>
+
+                      <th style="width: 10%">
+                          Product Name
+                      </th>
+                      <th style="width: 15%">
+                          Category
+                      </th>
+                      <th style="width: 10%">
+                          Brand
+                      </th>
+
+                      <th style="width: 10%">
+                          Vendor
+                      </th>
+
+                      <th style="width: 10%">
+                          Sold Quantity
+                      </th>
+
+                      <th style="width: 10%">
+                          Sale Value
+                      </th>
+
+
+
+
+
+                  </tr>
+              </thead>
+              <tbody id="tbody">
+              {% for row in productdetails  %}
+              <tr>
+                  <td>
+                      {{ row['saleorderdate'] }}
+                  </td>
+                    <td>
+                      {{ row['storename'] }}
+                  </td>
+
+                   <td>
+                      {{ row['posname'] }}
+                  </td>
+
+                  <td>
+                      {{ row['barcode'] }}
+                  </td>
+
+                  <td>
+                     {{ row['productname'] }}
+                  </td>
+
+                  <td>
+                     {{ row['categoryname'] }}
+                  </td>
+
+                  <td>
+                    {{ row['brandname'] }}
+                  </td>
+
+                  <td>
+                    {{ row['vendorname'] }}
+                  </td>
+
+                  <td>
+                    {{ row['soldquantity'] }}
+                  </td>
+
+                  <td>
+                    {{ row['linetotal'] }}
+                  </td>
+
+
+
+              </tr>
+
+
+
+              {% endfor %}
+
+              </tbody>
+          </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+
+      </div>
+
+
+      <div class="row">
+        <div class="col-3">
+          <a href="#" id="btncancel" class="btn btn-secondary ">Cancel</a>
+            <button type="submit"  name="btnview" value="btnprint" class="btn btn-success float-center">Print Sale Report</button>
+            <button type="submit"   name="btnview" value="btnview" class="btn btn-success float-right">View Sale Report</button>
+        </div>
+      </div>
+ </form>
+    </section>
+
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="/static/assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- DataTables  & Plugins -->
+<script src="/static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/static/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/static/assets/plugins/jszip/jszip.min.js"></script>
+<script src="/static/assets/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/static/assets/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+
+
+  <!-- AdminLTE App -->
+  <script src="/static/assets/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/static/assets/js/demo.js"></script>
+<script src="{{ url_for('static', filename='dist/js/jquery.toast.min.js') }}"></script>
+
+
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+
+
+$(document).on("click", "#btncancel", function(){
+        $("#saleordersearchform")[0].reset();
+    });
+
+
+
+$(function () {
+    $('#saleorderstable').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+
+
+
+
+
+});
+
+
+
+    </script>
+
+
+{% endblock javascripts %}

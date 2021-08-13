@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Sale Report</title>
+</head>
+<body>
+
+<table id="saleorderstable" class="table table-striped ">
+              <thead>
+                  <tr>
+
+                      <th style="width: 10%">
+                          Sale Date
+                      </th>
+
+                       <th style="width: 10%">
+                          Store
+                      </th>
+
+                      <th style="width: 10%">
+                          POS
+                      </th>
+
+                        <th style="width: 10%">
+                          Barcode
+                      </th>
+
+                      <th style="width: 10%">
+                          Product Name
+                      </th>
+                      <th style="width: 15%">
+                          Category
+                      </th>
+                      <th style="width: 10%">
+                          Brand
+                      </th>
+
+                      <th style="width: 10%">
+                          Vendor
+                      </th>
+
+                      <th style="width: 10%">
+                          Sold Quantity
+                      </th>
+
+                      <th style="width: 10%">
+                          Sale Value
+                      </th>
+
+
+
+
+
+                  </tr>
+              </thead>
+              <tbody id="tbody">
+              {% for row in productdetails  %}
+              <tr>
+                  <td>
+                      {{ row['saleorderdate'] }}
+                  </td>
+                    <td>
+                      {{ row['storename'] }}
+                  </td>
+
+                   <td>
+                      {{ row['posname'] }}
+                  </td>
+
+                  <td>
+                      {{ row['barcode'] }}
+                  </td>
+
+                  <td>
+                     {{ row['productname'] }}
+                  </td>
+
+                  <td>
+                     {{ row['categoryname'] }}
+                  </td>
+
+                  <td>
+                    {{ row['brandname'] }}
+                  </td>
+
+                  <td>
+                    {{ row['vendorname'] }}
+                  </td>
+
+                  <td>
+                    {{ row['soldquantity'] }}
+                  </td>
+
+                  <td>
+                    {{ row['linetotal'] }}
+                  </td>
+
+
+
+              </tr>
+
+
+
+              {% endfor %}
+
+              </tbody>
+          </table>
+
+
+</body>
+</html>

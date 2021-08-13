@@ -1,0 +1,7 @@
+WTForms==2.3.3
+Flask_WTF==0.14.3
+Flask==1.1.2
+Flask_MySQLdb==0.2.0
+booleano==1.1a2
+Shapely==1.7.1
+gunicorn

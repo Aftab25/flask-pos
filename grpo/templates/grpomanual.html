@@ -1,0 +1,516 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Goods Receipt PO {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/static/assets/plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/static/assets/css/adminlte.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='dist/css/jquery.toast.min.css') }}">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-6">
+          <div class="col-sm-6">
+            <h1>Add GRPO</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Add GRPO</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="row">
+        <div class="col-md-12">
+                  <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">GRPO Master</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+
+                     <form id="grpomanualform" method="post" action="">
+                  {{ form.hidden_tag() }}
+
+            <div class="card-body">
+             <table id="grpomastertable" class="table table-striped ">
+              <thead>
+                  <tr>
+
+                      <th style="width: 10%">
+                          Vendor
+                      </th>
+                      <th style="width: 30%">
+                          Warehouse
+                      </th>
+                      <th style="width: 10%">
+                          Order Date
+                      </th>
+                      <th style="width: 10%" class="text-center">
+                          Receipt Date
+                      </th>
+
+                      <th style="width: 10%">
+                          Status
+                      </th>
+
+                  </tr>
+              </thead>
+              <tbody id="tbody">
+              <tr>
+                  <td>{{ form.vendorname (placeholder='Vendor Name', class='form-control') }}</td>
+                  <td> {{ form.warehousename (placeholder='Warehouse Name', class='form-control') }} </td>
+                  <td> {{ form.orderdate (placeholder='Order Date', class='form-control') }}  </td>
+                  <td> {{ form.receiptdate (placeholder='Receipt Date', class='form-control') }}  </td>
+                  <td> {{ form.status (placeholder='Status', class='form-control') }}  </td>
+              </tr>
+
+              </tbody>
+          </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        </div>
+
+
+
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Search Products</h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="form-group">
+                <label for="barcode">Barcode</label>
+                  {{ form.barcode (placeholder='Barcode', class='form-control') }}
+                  </div>
+
+                <div class="form-group">
+                    <label for="productname">Product Name</label>
+                    {{ form.productname (placeholder='Product Name', class='form-control') }}
+                </div>
+
+                <div class="form-group">
+                    <label for="purchaseprice">Purchase Price</label>
+                    {{ form.purchaseprice (placeholder = 'Purchase Price', class='form-control') }}
+                </div>
+
+
+                <div class="form-group">
+                  <label for="quantity">Quantity</label>
+                  {{ form.quantity (placeholder='Quantity', class='form-control') }}
+              </div>
+                <div class="form-group">
+                    <label for="linetotal">Line Total</label>
+                    {{ form.linetotal (placeholder='Line Total', class='form-control' ) }}
+                </div>
+
+
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+
+
+        <div class="col-md-9">
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">GRPO Details</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+             <table id="saleordertable" class="table table-striped ">
+              <thead>
+                  <tr>
+
+                      <th style="width: 10%">
+                          Barcode
+                      </th>
+                      <th style="width: 30%">
+                          Product Name
+                      </th>
+                      <th style="width: 10%">
+                          Purchase Price
+                      </th>
+                      <th style="width: 10%" class="text-center">
+                          Quantity
+                      </th>
+
+                      <th style="width: 10%">
+                          Line Total
+                      </th>
+
+                      <th style="width: 20%">
+                          Delete
+                      </th>
+                  </tr>
+              </thead>
+              <tbody id="tbody">
+
+              </tbody>
+          </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+
+
+
+            <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Grand Total</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="grandtotal">Grand Total</label>
+                    {{ form.grandtotal (placeholder='Grand Total', class='form-control' ) }}
+                </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <a href="#" id="btncancel" class="btn btn-secondary">Cancel</a>
+            <button type="button" id="btnaddproduct" class="btn btn-success float-center">Add Product to GRPO</button>
+            <button type="button" id="btnsaveorder" class="btn btn-success float-right">Save GRPO</button>
+            <a href="{{ url_for('grpo_bp.searchgrpos') }}" class="btn btn-secondary">Search GRPOs</a>
+        </div>
+      </div>
+ </form>
+    </section>
+
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="/static/assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="/static/assets/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/static/assets/js/demo.js"></script>
+<script src="{{ url_for('static', filename='dist/js/jquery.toast.min.js') }}"></script>
+
+
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+    $(document).keyup(function(event){
+        if ($("#barcode").is(":focus") && event.key=="Enter")
+            {
+                var barcode = $("#barcode").val();
+                if (barcode != '')
+                {
+                    searchproductname(barcode);
+            }
+    }
+
+        if ($("#quantity").is(":focus") && event.key=="Enter" )
+        {
+            <!--calculate line total -->
+            var linetotal = $("#quantity").val() * $("#purchaseprice").val();
+            linetotal=linetotal.toFixed(2);
+            $("#linetotal").val(linetotal);
+            $("#linetotal").attr("disabled", "disabled");
+        }
+    });
+
+
+$("#barcode").blur(function(){
+  {#for mobile users#}
+    var barcode = $("#barcode").val();
+    if (barcode != '')
+    {
+        searchproductname(barcode);
+    }
+});
+
+
+$("#quantity").blur(function(){
+ <!--calculate line total -->
+            var linetotal = $("#quantity").val() * $("#purchaseprice").val();
+            linetotal=linetotal.toFixed(2);
+            $("#linetotal").val(linetotal);
+            $("#linetotal").attr("disabled", "disabled");
+});
+
+
+function searchproductprice(barcode) {
+    $.post("/searchproductprice",{barcode: barcode}, function (data) {
+        data = data.replace(/[^.a-zA-Z0-9]/g, '');
+            var saleprice1 = data;
+            $("#saleprice").val(saleprice1);
+            $("#saleprice").attr("disabled", "disabled");
+            <!-- set forcus to quantity -->
+            $("#quantity").focus();
+        })
+    }
+
+
+
+    function searchproductname(barcode) {
+    $.post("/searchproductname",{barcode: barcode}, function (data) {
+            var productname = data[0];
+            $("#productname").val(productname);
+            $("#productname").attr("disabled", "disabled");
+            <!-- set forcus to quantity -->
+            $("#purchaseprice").focus();
+        })
+    }
+
+
+
+function insertRow(){
+            var table=document.getElementById("saleordertable");
+            var index=table.rows.length;
+            var row=table.insertRow(table.rows.length);
+                row.id="row"+index;
+            var cell1=row.insertCell(0);
+            var t1=document.createElement("input");
+                t1.id = "txtbarcode"+index;
+                t1.type="text";
+                t1.className="form-control barcode"
+                t1.value=$("#barcode").val();
+                t1.disabled=true;
+                cell1.appendChild(t1);
+            var cell2=row.insertCell(1);
+            var t2=document.createElement("input");
+                t2.id = "txtproductname"+index;
+                t2.type="text";
+                t2.className="form-control productname";
+                t2.value=$("#productname").val();
+                t2.disabled=true;
+                cell2.appendChild(t2);
+            var cell3=row.insertCell(2);
+            var t3=document.createElement("input");
+                t3.id = "txtpurchaseprice"+index;
+                t3.type="text";
+                t3.className="purchaseprice";
+                t3.value=$("#purchaseprice").val();
+                t3.disabled=true;
+                cell3.appendChild(t3);
+            var cell4=row.insertCell(3);
+            var t4=document.createElement("input");
+                t4.id = "txtquantity"+index;
+                t4.type="text";
+                t4.className="form-control quantity";
+                t4.value=$("#quantity").val();
+                t4.addEventListener('change', quantityhandler, false);
+                cell4.appendChild(t4);
+            var cell5=row.insertCell(4);
+            var t5=document.createElement("input");
+                t5.id = "txtlinetotal"+index;
+                t5.type="text";
+                t5.className="form-control linetotal";
+                t5.value=$("#linetotal").val();
+                t5.disabled=true;
+                cell5.appendChild(t5);
+            var cell6=row.insertCell(5);
+            var t6=document.createElement("button");
+                t6.id = "btndeleteline"+index;
+                t6.type="button";
+                t6.className="btndeleteline";
+                t6.setAttribute("style","font-size:14px;background-color: #4CAF50");
+                t6.innerHTML = "Delete";
+                t6.addEventListener('click', masterEventHandler, false);
+                cell6.appendChild(t6);
+}
+
+
+
+$(document).on("click", "#btnaddproduct", function(){
+    barcode= $("#barcode").val();
+    var quantity=$("#quantity").val();
+    productname=$("#productname").val();
+    var purchaseprice=$("#purchaseprice").val();
+    if  (barcode && quantity && productname && purchaseprice){
+        insertRow();
+
+        var grandtotal = $("#grandtotal").val();
+        linetotal = (Number(quantity) * Number (purchaseprice));
+        grandtotal = (Number(grandtotal) + Number(linetotal)) ;
+        $("#grandtotal").val( grandtotal.toFixed(2));
+        $("#grandtotal").attr("disabled", "disabled");
+
+        $("#barcode").val('');
+        $("#productname").val('');
+        $("#quantity").val('');
+        $('#purchaseprice').val('');
+        $('#linetotal').val('');
+        $("#barcode").focus();
+
+    }
+});
+
+
+$(document).on("click", "#btnsaveorder", function(){
+
+    var grandtotal = $("#grandtotal").val();
+    var warehousekey = $("#warehousename").val();
+    var vendorkey = $("#vendorname").val();
+    var orderdate = $("#orderdate").val();
+    var receiptdate = $("#receiptdate").val();
+    var status = $("#status").val();
+
+    if (grandtotal && warehousekey && vendorkey && orderdate && receiptdate) {
+        var table = document.getElementById("saleordertable");
+        var index = table.rows.length;
+        var productsarray = [];
+        for (let i = 1; i <= index; i++) {
+            var barcode = $('body').find('input[id="txtbarcode' + i + '"]').val();
+            var productname = $('body').find('input[id="txtproductname' + i + '"]').val();
+            var purchaseprice = $('body').find('input[id="txtpurchaseprice' + i + '"]').val();
+            var quantity = $('body').find('input[id="txtquantity' + i + '"]').val();
+            var linetotal = $('body').find('input[id="txtlinetotal' + i + '"]').val();
+            if (barcode && productname && purchaseprice && quantity && linetotal) {
+                productsarray.push(barcode);
+                productsarray.push(productname);
+                productsarray.push(purchaseprice);
+                productsarray.push(quantity);
+                productsarray.push(linetotal);
+            }
+        }
+        if (productsarray.length > 0) {
+            $.post("/grpo", {
+                productsarray: productsarray,
+                grandtotal: grandtotal,
+                warehousekey: warehousekey,
+                vendorkey: vendorkey,
+                orderdate: orderdate,
+                receiptdate: receiptdate,
+                status: status
+            }, function (data) {
+                $.toast({
+                    text: 'GRPO ' + data + ' saved',
+                    position: 'top-right'
+                });
+
+                $("#saleordertable tr>td").remove();
+                $("#grandtotal").val('');
+                productsarray = [];
+            });
+        }
+    }
+});
+
+
+
+
+
+function masterEventHandler(event){
+    var linetotal = $(this).closest("tr").find(".linetotal").val();
+    var row_index = $(this).parent().parent().index();
+    {#alert(linetotal);#}
+    var grandtotal = $("#grandtotal").val();
+    grandtotal=(Number(grandtotal) - Number(linetotal));
+    $("#grandtotal").val(grandtotal.toFixed(2));
+
+    removeRow(row_index);
+}
+
+function removeRow(rowindex){
+        document.getElementById("saleordertable").deleteRow(rowindex);
+    }
+
+
+
+function quantityhandler(event){
+    var qty =  $(this).val();
+    var purchaseprice = $(this).closest("tr").find(".purchaseprice").val();
+    var newlinetotal = (purchaseprice * qty);
+    newlinetotal = newlinetotal.toFixed(2);
+    oldlinetotal=$(this).closest("tr").find(".linetotal").val();
+    $(this).closest("tr").find(".linetotal").val(linetotal);
+
+    //update grand totals as well
+    var grandtotal = $("#grandtotal").val();
+    grandtotal=(Number(grandtotal) - Number(oldlinetotal));
+    grandtotal = (Number(grandtotal) + Number(newlinetotal));
+    $("#grandtotal").val(grandtotal.toFixed(2));
+
+}
+
+});
+
+
+$(document).on("click", "#btncancel", function(){
+        $("#grpomanualform")[0].reset();
+    });
+
+
+
+    </script>
+
+
+
+
+
+
+{% endblock javascripts %}

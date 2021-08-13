@@ -1,0 +1,183 @@
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link">
+      <img src="/static/assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Digital POS</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="/static/assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+            <a href="#" class="d-block">{{ session['username'] }}</a>
+          <a href="{{ url_for('auth_bp.logout') }}" class="d-block">
+             Logout
+          </a>
+        </div>
+      </div>
+
+      <!-- SidebarSearch Form -->
+      <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Master Data
+                <i class="fas fa-angle-left right"></i>
+{#                <span class="badge badge-info right">6</span>#}
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url_for('store_bp.store') }}" class="nav-link" >
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Store</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url_for('pos_bp.pos') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>POS</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url_for('warehouse_bp.warehouse') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Warehouse</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url_for('products_bp.product') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Product</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url_for('category_bp.category') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Category</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url_for('brand_bp.brand') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Brand</p>
+                </a>
+              </li>
+
+            <li class="nav-item">
+                <a href="{{ url_for('vendor_bp.vendor') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Vendor</p>
+                </a>
+              </li>
+
+            <li class="nav-item">
+                <a href="{{ url_for('customer_bp.customer') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Customer</p>
+                </a>
+              </li>
+
+            <li class="nav-item">
+                <a href="{{ url_for('misc_bp.searchinventory') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Inventory</p>
+                </a>
+              </li>
+
+
+
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ url_for('sale_bp.dailysalereport') }}" class="nav-link">
+              <i class="nav-icon far fa-calendar-alt"></i>
+              <p>
+                Daily Sale Report
+{#                <span class="badge badge-info right">2</span>#}
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('sale_bp.sale') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Sale
+              </p>
+            </a>
+          </li>
+
+
+        <li class="nav-item">
+            <a href="{{ url_for('refund_bp.refund') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Refund
+              </p>
+            </a>
+          </li>
+
+
+        <li class="nav-item">
+            <a href="{{ url_for('grpo_bp.grpo') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                GRPO
+              </p>
+            </a>
+          </li>
+
+
+
+        <li class="nav-item">
+            <a href="{{ url_for('goodsreceipt_bp.goodsreceipt') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Goods Receipt
+              </p>
+            </a>
+          </li>
+
+
+        <li class="nav-item">
+            <a href="{{ url_for('goodsissue_bp.goodsissue') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Goods Issue
+              </p>
+            </a>
+          </li>
+
+
+
+
+
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

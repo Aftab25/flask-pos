@@ -1,0 +1,364 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Search POSs {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/static/assets/plugins/fontawesome-free/css/all.min.css">
+
+    <!-- DataTables -->
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/static/assets/css/adminlte.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='dist/css/jquery.toast.min.css') }}">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-6">
+          <div class="col-sm-6">
+            <h1>Search POSs</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Search POSs</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Search POSs</h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+              <form id="possearchform" method="post" action="searchpos">
+                  {{ form.hidden_tag() }}
+            <div class="card-body">
+              <div class="form-group">
+                <label for="posid">POS ID</label>
+                  {{ form.posid (placeholder='POS ID', class='form-control') }}
+                  </div>
+
+                <div class="form-group">
+                    <label for="posname">POS Name</label>
+                    {{ form.posname (placeholder='POS Name', class='form-control') }}
+                </div>
+
+                <div class="form-group">
+                    <label for="storename">Store Name</label>
+                    {{ form.storename (placeholder = 'Store Name', class='form-control') }}
+                </div>
+
+
+
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+
+
+        <div class="col-md-9">
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">POS List</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+             <table id="producttable" class="table table-striped ">
+              <thead>
+                  <tr>
+
+                      <th style="width: 10%">
+                          POS ID
+                      </th>
+                      <th style="width: 30%">
+                          POS Name
+                      </th>
+                      <th style="width: 10%">
+                          Store Name
+                      </th>
+
+
+
+                      <th style="width: 5%">
+                          Edit
+                      </th>
+                      <th style="width: 5%">
+                          Delete
+                      </th>
+                  </tr>
+              </thead>
+              <tbody id="tbody">
+              {% for row in productdetails  %}
+              <tr>
+                  <td>
+                     {{ row['posid'] }}
+                  </td>
+
+                  <td>
+                     {{ row['posname'] }}
+                  </td>
+
+                  <td>
+                     {{ row['storename'] }}
+                  </td>
+
+                    <td>
+                     <button type="button" class="btnviewproduct" data-id="{{ row['poskey'] }}"  data-toggle="modal" data-target="#modal-xl"  >Edit</button>
+                  </td>
+
+                    <td>
+
+                  </td>
+
+              </tr>
+              {% endfor %}
+
+              </tbody>
+          </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+
+
+
+
+
+
+          <div class="modal fade" id="modal-xl">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">POS Detail</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <table id="viewsaleordertable" class="table table-striped ">
+              <thead>
+                  <tr>
+                        <th style="width: 10%">
+                          POS ID
+                      </th>
+
+                      <th style="width: 10%">
+                          POS Name
+                      </th>
+                      <th style="width: 15%">
+                          Store Name
+                      </th>
+
+
+                  </tr>
+              </thead>
+              <tbody id="viewsaleordertbody">
+
+              <tr>
+                  <td >
+                      <input type="text" id="vposid" name="vposid" class="vposid" >
+                      <input type="hidden" id="vposkey" class="vposkey">
+                  </td>
+
+                  <td >
+                        <input type="text" id="vposname" name="vposname" class="vposname" >
+                  </td>
+
+                  <td >
+                      <select id="vstore" class="vstore" ></select>
+                  </td>
+
+
+              </tr>
+                  </tbody>
+
+                  </table>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" id="btnclose" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" id="saveproduct" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+
+
+
+
+
+
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <a href="#" id="btncancel" class="btn btn-secondary">Cancel</a>
+            <button type="submit" id="btnsearchproducts" class="btn btn-success float-right">Search POSs</button>
+        </div>
+      </div>
+ </form>
+    </section>
+
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="/static/assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables  & Plugins -->
+<script src="/static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/static/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/static/assets/plugins/jszip/jszip.min.js"></script>
+<script src="/static/assets/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/static/assets/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+
+
+  <!-- AdminLTE App -->
+  <script src="/static/assets/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/static/assets/js/demo.js"></script>
+<script src="{{ url_for('static', filename='dist/js/jquery.toast.min.js') }}"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+     $.get("/getstores", {}, function(data){
+                var catlist= document.getElementById("vstore");
+                for (i=0; i<data.length; i++)
+                {
+                    var option = document.createElement("option");
+                    option.value = data[i][0];
+                    option.text = data[i][1];
+                    catlist.appendChild(option);
+                }
+                }
+            );
+
+
+
+       $('#modal-xl').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var poskey = button.data('id'); // Extract info from data-* attributes
+            insertRow(poskey);
+        });
+
+function insertRow(poskey){
+    $.get("/pos", {poskey: poskey}, function (data) {
+        $("#vposkey").val(data[0]['poskey']);
+        $("#vposid").val(data[0]['posid']);
+        $("#vposname").val(data[0]['posname']);
+            document.getElementById("vstore").value = data[0]['storekey'];
+    });
+}
+
+
+$(document).on("click", "#saveproduct", function(){
+    var poskey= $("#vposkey").val();
+    var posid=$("#vposid").val();
+    var posname=$("#vposname").val();
+    var store = $("#vstore").val();
+
+
+    $.ajax({
+    url: '/pos',
+    method: 'PUT',
+    contentType: 'application/json',
+        data: { poskey:poskey, posid:posid, posname:posname,store:store } ,
+    success: function(result) {
+        // handle success
+        if (result == 'POS Updated')
+            {
+                $.toast('POS Updated');
+                 $('#modal-xl').modal('hide');
+                  location.reload();
+            }
+    },
+    error: function(request,msg,error) {
+        // handle failure
+        console.log(msg)
+        }
+    });
+
+});
+
+
+$(function () {
+    $('#producttable').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+
+$(document).on("click", "#btncancel", function(){
+        $("#possearchform")[0].reset();
+    });
+
+
+
+
+});
+    </script>
+
+{% endblock javascripts %}

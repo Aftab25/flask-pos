@@ -1,0 +1,395 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Refund {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/static/assets/plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/static/assets/css/adminlte.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='dist/css/jquery.toast.min.css') }}">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-6">
+          <div class="col-sm-6">
+            <h1>Refund</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Refund</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Refund </h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+              <form id="refundform" method="post" action="">
+                  {{ form.hidden_tag() }}
+            <div class="card-body">
+              <div class="form-group">
+                <label for="saleorderkey">Sale Order Key</label>
+                  {{ form.saleorderkey (placeholder='Sale Order Key', class='form-control') }}
+                  </div>
+
+
+
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+
+
+        <div class="col-md-9">
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Refund Details</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+             <table id="saleordertable" class="table table-striped ">
+              <thead>
+                  <tr>
+
+                      <th style="width: 10%">
+                          Barcode
+                      </th>
+                      <th style="width: 30%">
+                          Product Name
+                      </th>
+                      <th style="width: 10%">
+                          Sale Price
+                      </th>
+                      <th style="width: 10%" class="text-center">
+                          Quantity
+                      </th>
+
+                      <th style="width: 10%">
+                          Line Total
+                      </th>
+
+                      <th style="width: 20%">
+                          Delete
+                      </th>
+                  </tr>
+              </thead>
+              <tbody id="tbody">
+
+              </tbody>
+          </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+
+
+
+
+            <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Grand Total</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="grandtotal">Grand Total</label>
+                    {{ form.grandtotal (placeholder='Grand Total', class='form-control' ) }}
+                </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+
+
+
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-12">
+            <a href="searchrefundorders" class="btn btn-secondary">Search Refund Orders</a>
+          <a href="#" class="btn btn-secondary">Cancel</a>
+            <button type="button" id="btngetsaleorderdetails" class="btn btn-success float-center">Get Sale Order Details</button>
+            <button type="button" id="btnsaverefund" class="btn btn-success float-right">Save Refund Transaction</button>
+
+        </div>
+      </div>
+ </form>
+    </section>
+
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="/static/assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="/static/assets/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/static/assets/js/demo.js"></script>
+<script src="{{ url_for('static', filename='dist/js/jquery.toast.min.js') }}"></script>
+
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+     $("#refundform").submit(function(e){
+        e.preventDefault();
+    });
+
+
+function insertRow(){
+    {#get sale order details#}
+    var saleorderkey= $("#saleorderkey").val();
+    $.get("/sale", {saleorderkey: saleorderkey}, function (data) {
+    var table=document.getElementById("saleordertable");
+    var newdata=  data.split("},");
+    for (let i=0; i<newdata.length; i++)
+    {
+        var subrow =  newdata[i];
+        var third=subrow.split(",");
+        var index=table.rows.length;
+        var row=table.insertRow(table.rows.length);
+            row.id="row"+index;
+            row.className="tblrows";
+        var cell1=row.insertCell(0);
+        var t1=document.createElement("input");
+            t1.id = "txtbarcode"+index;
+            t1.type="text";
+            t1.className="barcode";
+            var barcode=third[3].split(":");
+            barcode=barcode[1].replace(/"/g, '');
+            barcode=barcode.trim();
+            t1.value=barcode;
+            t1.disabled=true;
+            cell1.appendChild(t1);
+        var cell2=row.insertCell(1);
+        var t2=document.createElement("input");
+            t2.id = "txtproductname"+index;
+            t2.type="text";
+            t2.className="productname";
+            var productname =third[4].split(":");
+            productname= productname[1].replace(/"/g, '');
+            t2.value=productname;
+            t2.disabled=true;
+            cell2.appendChild(t2);
+        var cell3=row.insertCell(2);
+        var t3=document.createElement("input");
+            t3.id = "txtsaleprice"+index;
+            t3.type="text";
+            t3.className="saleprice";
+            var saleprice =third[6].split(":");
+            saleprice= saleprice[1].replace(/"/g, '');
+            t3.value=saleprice;
+            t3.disabled=true;
+            cell3.appendChild(t3);
+        var cell4=row.insertCell(3);
+        var t4=document.createElement("input");
+            t4.id = "txtquantity"+index;
+            t4.type="text";
+            t4.className="quantity";
+            var quantity =third[5].split(":");
+            quantity= quantity[1].replace(/"/g, '');
+            t4.value=quantity;
+            t4.addEventListener('change', quantityhandler, false);
+            cell4.appendChild(t4);
+        var cell5=row.insertCell(4);
+        var t5=document.createElement("input");
+            t5.id = "txtlinetotal"+index;
+            t5.type="text";
+            t5.className="linetotal";
+            var linetotal =third[7].split(":");
+            linetotal= linetotal[1].replace(/"/g, '');
+            linetotal= linetotal.replace(/}/g, '');
+            linetotal= linetotal.replace(/]/g, '');
+            t5.value=linetotal;
+            t5.disabled=true;
+            cell5.appendChild(t5);
+        var cell6=row.insertCell(5);
+        var t6=document.createElement("button");
+            t6.id = "btndeleteline"+index;
+            t6.type="button";
+            t6.className="btndeleteline";
+            t6.setAttribute("style","font-size:14px;background-color: #4CAF50");
+            t6.innerHTML = "Delete";
+            t6.addEventListener('click', masterEventHandler, false);
+            cell6.appendChild(t6);
+    }
+    });
+}
+
+
+
+$(document).on("click", "#btngetsaleorderdetails", function(){
+    var saleorderkey= $("#saleorderkey").val();
+    if (saleorderkey) {
+        $.post('/totalrefundstatus', {saleorderkey: saleorderkey}, function (data) {
+            var refundstatus = data;
+
+             if  (refundstatus=='Y' ){
+
+                 {#remove old search results if any#}
+                  $("#saleordertable tr>td").remove();
+                  {#get new data#}
+                    insertRow();
+
+                    $.post('/getsaleordertotal', {saleorderkey: saleorderkey}, function (data){
+                        data = data.replace(/"/g, '');
+                        data = data.replace(/}/g, '');
+                        data = data.replace(/]/g, '');
+                        data = data.split(":");
+                         $("#grandtotal").val(data[1]);
+                         $("#grandtotal").attr("disabled", "disabled");
+                    });
+
+                    $("#barcode").val('');
+                    $("#productname").val('');
+                    $("#quantity").val('');
+                    $('#saleprice').val('');
+                    $('#linetotal').val('');
+                    $("#barcode").focus();
+                }
+             else {
+                 $.toast({text:'This sale order cannot be refunded',
+                 position : 'top-right'
+                 });
+             }
+
+        })
+    }
+
+
+
+
+});
+
+
+$(document).on("click", "#btnsaverefund", function(){
+    var saleorderkey=$("#saleorderkey").val();
+    var table=document.getElementById("saleordertable");
+    var index=table.rows.length;
+    var refundordertotal = $("#grandtotal").val();
+    var productsarray = [];
+    for (let i=1; i <=index;  i++)
+    {
+        var barcode= $('body').find('input[id="txtbarcode' + i + '"]').val();
+        var productname= $('body').find('input[id="txtproductname' + i + '"]').val();
+        var saleprice= $('body').find('input[id="txtsaleprice' + i + '"]').val();
+        var quantity= $('body').find('input[id="txtquantity' + i + '"]').val();
+        var linetotal= $('body').find('input[id="txtlinetotal' + i + '"]').val();
+        if (barcode && productname && saleprice && quantity && linetotal )
+        {
+            productsarray.push(barcode);
+            productsarray.push(productname);
+            productsarray.push(saleprice);
+            productsarray.push(quantity);
+            productsarray.push(linetotal);
+        }
+    }
+    if (productsarray.length>0) {
+        $.post("/refund", {productsarray: productsarray, saleorderkey:saleorderkey, refundordertotal:refundordertotal}, function (data) {
+             $.toast({text:'Refund Transaction ' + data + " saved" ,
+                 position : 'top-right'
+                 });
+
+            $("#saleordertable tr>td").remove();
+            $("#grandtotal").val('');
+            productsarray = [];
+        });
+    }
+});
+
+
+
+
+
+function masterEventHandler(event){
+    var row_index = $(this).parent().parent().index();
+    var linetotal = $(this).closest("tr").find(".linetotal").val();
+    var grandtotal = $("#grandtotal").val();
+    grandtotal= Number(grandtotal) - Number(linetotal);
+    $("#grandtotal").val(grandtotal.toFixed(2));
+    document.getElementById("saleordertable").deleteRow(row_index);
+}
+
+
+
+
+function quantityhandler(event){
+    var qty =  $(this).val();
+     var row_id = $(this).closest('tr').attr('id');
+    var saleorderkey=$("#saleorderkey").val();
+    var barcode = $(this).closest("tr").find(".barcode").val();
+     var saleprice = $(this).closest("tr").find(".saleprice").val();
+      var linetotal = $(this).closest("tr").find(".linetotal").attr('id');
+
+    {#check sold qty#}
+    $.post('/getsoldproductquantity', {saleorderkey:saleorderkey, barcode:barcode }, function (data) {
+        if (parseInt(qty) <= data)
+        {
+            var linetotalval = (saleprice * qty);
+            linetotalval = linetotalval.toFixed(2);
+            var total =  $("#" + linetotal).val(linetotalval);
+        }
+        else
+        {
+             $.toast({text:'Refund quantity is greater than sold quantity',
+                 position : 'top-right'
+                 });
+        }
+    });
+
+}
+
+});
+    </script>
+
+
+
+
+
+
+{% endblock javascripts %}

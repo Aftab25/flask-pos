@@ -1,0 +1,341 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Search Brands {% endblock %}
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} sidebar-mini {% endblock body_class %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/static/assets/plugins/fontawesome-free/css/all.min.css">
+
+    <!-- DataTables -->
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="/static/assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/static/assets/css/adminlte.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='dist/css/jquery.toast.min.css') }}">
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-6">
+          <div class="col-sm-6">
+            <h1>Search Brands</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Search Brands</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="row">
+        <div class="col-md-3">
+
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Search Brands</h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+              <form id="brandsearchform" method="post" action="searchbrand">
+                  {{ form.hidden_tag() }}
+            <div class="card-body">
+              <div class="form-group">
+                <label for="brandid">Brand ID</label>
+                  {{ form.brandid (placeholder='Brand ID', class='form-control') }}
+                  </div>
+
+                <div class="form-group">
+                    <label for="brandname">Brand Name</label>
+                    {{ form.brandname (placeholder='Brand Name', class='form-control') }}
+                </div>
+
+
+
+
+
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+
+
+        <div class="col-md-9">
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Brand List</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+             <table id="producttable" class="table table-striped ">
+              <thead>
+                  <tr>
+
+                      <th style="width: 10%">
+                          Brand ID
+                      </th>
+                      <th style="width: 30%">
+                          Brand Name
+                      </th>
+
+
+                      <th style="width: 5%">
+                          Edit
+                      </th>
+                      <th style="width: 5%">
+                          Delete
+                      </th>
+                  </tr>
+              </thead>
+              <tbody id="tbody">
+              {% for row in productdetails  %}
+              <tr>
+                  <td>
+                     {{ row['brandid'] }}
+                  </td>
+
+                  <td>
+                     {{ row['brandname'] }}
+                  </td>
+
+
+
+                    <td>
+                     <button type="button" class="btnviewproduct" data-id="{{ row['brandkey'] }}"  data-toggle="modal" data-target="#modal-xl"  >Edit</button>
+                  </td>
+
+                    <td>
+
+                  </td>
+
+              </tr>
+              {% endfor %}
+
+              </tbody>
+          </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+
+
+
+
+
+
+          <div class="modal fade" id="modal-xl">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Brand Detail</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <table id="viewsaleordertable" class="table table-striped ">
+              <thead>
+                  <tr>
+                        <th style="width: 10%">
+                          Brand ID
+                      </th>
+
+                      <th style="width: 10%">
+                          Brand Name
+                      </th>
+
+
+
+
+                  </tr>
+              </thead>
+              <tbody id="viewsaleordertbody">
+
+              <tr>
+                  <td >
+                      <input type="text" id="vbrandid" name="vbrandid" class="vbrandid" >
+                      <input type="hidden" id="vbrandkey" class="vbrandkey">
+                  </td>
+
+                  <td >
+                        <input type="text" id="vbrandname" name="vbrandname" class="vbrandname" >
+                  </td>
+
+
+
+              </tr>
+                  </tbody>
+
+                  </table>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" id="btnclose" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" id="saveproduct" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+
+
+
+
+
+
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <a href="#" id="btncancel" class="btn btn-secondary">Cancel</a>
+            <button type="submit" id="btnsearchproducts" class="btn btn-success float-right">Search Brands</button>
+        </div>
+      </div>
+ </form>
+    </section>
+
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <!-- jQuery -->
+  <script src="/static/assets/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables  & Plugins -->
+<script src="/static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/static/assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/static/assets/plugins/jszip/jszip.min.js"></script>
+<script src="/static/assets/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/static/assets/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/static/assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+
+
+  <!-- AdminLTE App -->
+  <script src="/static/assets/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/static/assets/js/demo.js"></script>
+<script src="{{ url_for('static', filename='dist/js/jquery.toast.min.js') }}"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+
+
+       $('#modal-xl').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var brandkey = button.data('id'); // Extract info from data-* attributes
+            insertRow(brandkey);
+        });
+
+    function insertRow(brandkey){
+    $.get("/brand", { brandkey:brandkey }, function (data) {
+        $("#vbrandid").val(data[0]['brandid']);
+        $("#vbrandkey").val(data[0]['brandkey']);
+        $("#vbrandname").val(data[0]['brandname']);
+
+        });
+    }
+
+
+    $(document).on("click", "#saveproduct", function(){
+    var brandid=$("#vbrandid").val();
+    var brandkey=$("#vbrandkey").val();
+    var brandname = $("#vbrandname").val();
+
+
+    $.ajax({
+    url: '/brand',
+    method: 'PUT',
+    contentType: 'application/json',
+        data: { brandid:brandid, brandkey:brandkey, brandname:brandname  } ,
+    success: function(result) {
+        // handle success
+        if (result == 'Brand Updated')
+            {
+                $.toast('Brand Updated');
+                 $('#modal-xl').modal('hide');
+                  location.reload();
+            }
+    },
+    error: function(request,msg,error) {
+        // handle failure
+        console.log(msg)
+        }
+    });
+
+
+
+
+});
+
+
+$(function () {
+    $('#producttable').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+
+
+$(document).on("click", "#btncancel", function(){
+        $("#brandsearchform")[0].reset();
+    });
+
+
+
+});
+    </script>
+
+{% endblock javascripts %}
